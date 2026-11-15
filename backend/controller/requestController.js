@@ -1,3 +1,4 @@
+const STATUS = require("../constants/httpStatus");
 const { createRequestServ , employeeRequestsSrv , allRequestsSrv , specRequestSrv , updateStatusSrv } = require("../services/requestService");
 
 const createRequest = async (req,res) => {
@@ -6,7 +7,7 @@ const createRequest = async (req,res) => {
 
     const request = await createRequestServ({employeeId , title , description , priority});
 
-    return res.status(201).json({success: true , data: {request}});
+    return res.status(STATUS.CREATED).json({success: true , data: {request}});
 }
 
 
@@ -16,14 +17,14 @@ const employeeRequests = async (req,res) => {
     
     const requests = await employeeRequestsSrv(employeeId);
     
-    return res.status(200).json({success: true , data: {requests}});
+    return res.status(STATUS.OK).json({success: true , data: {requests}});
 }
 
 
 const allRequests = async (req,res) => {
     const requests = await allRequestsSrv();
     
-    return res.status(200).json({success: true , data: {requests}});
+    return res.status(STATUS.OK).json({success: true , data: {requests}});
 }
 
 const specRequest = async (req,res) => {
@@ -33,7 +34,7 @@ const specRequest = async (req,res) => {
 
     const request = await specRequestSrv(requestId,employeeId , role);
     
-    return res.status(200).json({success: true , data: {request}});
+    return res.status(STATUS.OK).json({success: true , data: {request}});
 }
 
 
@@ -43,7 +44,7 @@ const updateStatus = async (req,res) => {
     
     const request = await updateStatusSrv({requestId , status});
 
-    return res.status(200).json({success: true , data: {request}});
+    return res.status(STATUS.OK).json({success: true , data: {request}});
 }
 
 module.exports = {createRequest , employeeRequests , allRequests , specRequest , updateStatus};

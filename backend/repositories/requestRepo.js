@@ -37,5 +37,9 @@ const updateStatusRep = async (data) => {
   return request;
 }
 
-module.exports = {createRequestRep , employeeRequestsRep , allRequestsRep , specRequestRep , updateStatusRep};
+const getRequestById = async (requestId) => {
+  return await Request.findById(requestId);
+}
+
+module.exports = {createRequestRep , employeeRequestsRep , allRequestsRep , specRequestRep , updateStatusRep , getRequestById};
  

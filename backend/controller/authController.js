@@ -1,5 +1,5 @@
 const STATUS = require("../constants/httpStatus");
-const { createEmployee , loginUserServ } = require("../services/aurhServices");
+const { createEmployee , loginUserServ , refreshTokensSrv } = require("../services/aurhServices");
 const {
   createAccessToken,
   createRefreshToken,
@@ -62,4 +62,26 @@ const loginUser = async (req,res) => {
   return res.status(STATUS.OK).json({success: true , data:{user}});
 }
 
-module.exports = {signupUser , loginUser};
+
+const refreshTokens = async (req,res) => {
+  const {refreshToken} = req.cookies;
+
+  const accessToken = await refreshTokensSrv(refreshToken);
+
+  if(accessToken){
+    res.cookie("accessToken" , accessToken , {httpOnly: true , secure: production , sameSite: production ? "none" : "lax", maxAge: 15 * 60 * 1000});    
+    
+    return res.status(STATUS.OK).json({success: true});
+  }
+}
+
+
+const logoutUser = async (req,res) => {
+  res.clearCookie("accessToken" , {httpOnly: true , secure: production ,sameSite: production ? "none" : "lax"});
+  res.clearCookie("refreshToken" , {httpOnly: true , secure: production ,sameSite: production ? "none" : "lax"});
+
+
+  return res.status(STATUS.OK).json({success: true});
+}
+
+module.exports = {signupUser , loginUser , refreshTokens , logoutUser};

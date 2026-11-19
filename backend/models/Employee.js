@@ -35,6 +35,41 @@ const employeeSchema = new Schema({
         type: String,
         default: null,
     },
+
+    verificationCodeHash: {
+        type: String,
+        default: null,
+    },
+
+    verificationCodeExpiresAt: {
+        type: Date,
+        default: null
+    },
+
+    verificationAttempts: {
+        type: Number,
+        default: 0
+    },
+
+    verificationLastSentAt: {
+        type: Date,
+        default: null
+    },
+    
+    verificationResendCount: {
+        type: Number,
+        default: 0,
+    },
+    
+    verificationResendWindowStart: {
+        type: Date,
+        default: null
+    },
+
+    isVerified: {
+        type: Boolean,
+        default: false,
+    }
 });
 
 // Before save in db 
@@ -55,8 +90,11 @@ employeeSchema.statics.login = async function(email , password) {
 
     if(!auth) throw(createError(STATUS.UNAUTHORIZED , "Incorrect Password."));
 
-    return {_id: user._id , name: user.name , email: user.email , role: user.role, avatar: user.avatar};
+    return {_id: user._id , name: user.name , email: user.email , role: user.role, avatar: user.avatar , isVerified: user.isVerified};
 }
+
+// To prevent Race condition problem 
+employeeSchema.set("optimisticConcurrency" , true);
 
 const Employee = mongoose.model("Employee" , employeeSchema);
 

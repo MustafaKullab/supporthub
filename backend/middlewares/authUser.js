@@ -17,6 +17,11 @@ const authUser = (req, res, next) => {
         return res
           .status(STATUS.UNAUTHORIZED)
           .json({ success: false, message: "Employee not found" });
+      
+      if (!employee.isVerified)
+        return res
+          .status(STATUS.UNAUTHORIZED)
+          .json({ success: false, message: "Employee account is not verified" });
 
       req.employee = employee;
       next();

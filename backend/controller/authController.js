@@ -1,5 +1,5 @@
 const STATUS = require("../constants/httpStatus");
-const { createEmployee , loginUserServ , refreshTokensSrv } = require("../services/aurhServices");
+const { createEmployee , verifyAccountSrv , loginUserServ , refreshTokensSrv, resendVerificationSrv } = require("../services/authServices");
 const {
   createAccessToken,
   createRefreshToken,
@@ -13,22 +13,6 @@ const signupUser = async (req, res) => {
 
   const user = await createEmployee({ name, email, password, avatar });
 
-  const accessToken = createAccessToken(user._id);
-  const refreshToken = createRefreshToken(user._id);
-
-  res.cookie("accessToken", accessToken, {
-    httpOnly: true,
-    sameSite: production ? "none" : "lax",
-    secure: production,
-    maxAge: 15 * 60 * 1000,
-  });
-  res.cookie("refreshToken", refreshToken, {
-    httpOnly: true,
-    sameSite: production ? "none" : "lax",
-    secure: production,
-    maxAge: 7 * 24 * 60 * 60 * 1000,
-  });
-
   return res
     .status(STATUS.CREATED)
     .json({
@@ -38,12 +22,29 @@ const signupUser = async (req, res) => {
 };
 
 
+const verifyAccount = async (req,res) => {
+  const {email , code} = req.body;
+
+  await verifyAccountSrv({email,code});
+
+  return res.status(STATUS.OK).json({success: true});
+}
+
+
+const resendVerification = async (req,res) => {
+  const {email} = req.body;
+
+  await resendVerificationSrv(email);
+
+  return res.status(STATUS.OK).json({success: true , message: "If eligible, a verification code will be sent"});
+}
+
 const loginUser = async (req,res) => {
     const {email , password} = req.body;
 
     const user = await loginUserServ({email , password});
 
-    const accessToken = createAccessToken(user._id);
+  const accessToken = createAccessToken(user._id);
   const refreshToken = createRefreshToken(user._id);
 
   res.cookie("accessToken", accessToken, {
@@ -84,4 +85,4 @@ const logoutUser = async (req,res) => {
   return res.status(STATUS.OK).json({success: true});
 }
 
-module.exports = {signupUser , loginUser , refreshTokens , logoutUser};
+module.exports = {signupUser , verifyAccount , resendVerification , loginUser , refreshTokens , logoutUser};

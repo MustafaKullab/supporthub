@@ -1,17 +1,23 @@
 const express = require("express");
 const tryCatch = require("../middlewares/tryCatch");
 const upload = require("../middlewares/upload");
-const { signupUser , loginUser , refreshTokens , logoutUser } = require("../controller/authController");
+const { signupUser , verifyAccount , loginUser , refreshTokens , logoutUser, resendVerification } = require("../controller/authController");
 const { authRateLimit } = require("../utils/rateLimits");
 const router = express.Router();
 
 
 
 // Signup router 
-router.post("/auth/signup" , upload.single("avatar") , tryCatch(signupUser));
+router.post("/auth/signup" , upload.single("avatar") , authRateLimit, tryCatch(signupUser));
+
+// Verify router 
+router.post("/auth/verify" , authRateLimit, tryCatch(verifyAccount));
+
+// Resend Code 
+router.post("/auth/resend-verification" , authRateLimit, tryCatch(resendVerification));
 
 // Login router 
-router.post("/auth/login" , authRateLimit, tryCatch(loginUser));
+router.post("/auth/login" , authRateLimit, authRateLimit, tryCatch(loginUser));
 
 // Router to refresh token 
 router.post("/auth/refresh" , tryCatch(refreshTokens));

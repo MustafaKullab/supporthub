@@ -69,7 +69,38 @@ const employeeSchema = new Schema({
     isVerified: {
         type: Boolean,
         default: false,
-    }
+    },
+
+    resetPasswordCode: {
+        type:String,
+        default: null
+    },
+    
+    resetPasswordCodeExpiresAt: {
+        type: Date,
+        default: null,
+    },
+    
+    resetPasswordCodeLastSentAt: {
+        type: Date,
+        default: null,
+    },
+    resetPasswordCodeAttempts: {
+        type: Number,
+        default: 0,
+    },
+    resetPasswordCodeResendCount: {
+        type: Number,
+        default: 0,
+    },
+    
+    resetPasswordCodeWindowStartAt: {
+        type: Date,
+        default: null,
+    },
+
+
+
 });
 
 // Before save in db 

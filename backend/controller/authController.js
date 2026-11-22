@@ -1,5 +1,5 @@
 const STATUS = require("../constants/httpStatus");
-const { createEmployee , verifyAccountSrv , loginUserServ , refreshTokensSrv, resendVerificationSrv } = require("../services/authServices");
+const { createEmployee , verifyAccountSrv , loginUserServ , refreshTokensSrv, resendVerificationSrv , forgotPasswordSrv , resetPasswordSrv } = require("../services/authServices");
 const {
   createAccessToken,
   createRefreshToken,
@@ -37,6 +37,22 @@ const resendVerification = async (req,res) => {
   await resendVerificationSrv(email);
 
   return res.status(STATUS.OK).json({success: true , message: "If eligible, a verification code will be sent"});
+}
+
+const forgotPassword = async (req,res)=> {
+  const {email} = req.body;
+
+  await forgotPasswordSrv(email);
+
+  return res.status(STATUS.OK).json({success: true , message: "If eligible, a reset password code will be sent"});
+}
+
+
+const resetPassword = async (req,res) => {
+  const {email , code , newPassword} = req.body;
+
+  await resetPasswordSrv(email , code , newPassword);
+  return res.status(STATUS.OK).json({success: true});
 }
 
 const loginUser = async (req,res) => {
@@ -85,4 +101,4 @@ const logoutUser = async (req,res) => {
   return res.status(STATUS.OK).json({success: true});
 }
 
-module.exports = {signupUser , verifyAccount , resendVerification , loginUser , refreshTokens , logoutUser};
+module.exports = {signupUser , verifyAccount , resendVerification , forgotPassword , resetPassword , loginUser , refreshTokens , logoutUser};

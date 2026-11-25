@@ -40,7 +40,7 @@
         <div class="col-lg-6 col-xl-7 px-5">
 
           <div class="details text-center">
-            <div class="header">
+            <div class="header pt-2">
 
               <div class="logo">
                 <img :src="logo"
@@ -218,6 +218,7 @@ import logo from '@/assets/supportHubLogo.png';
 import { ref } from 'vue';
 import * as authService from '@/services/authService';
 import { toast } from 'vue-sonner';
+import router from '@/router';
 
 // Define two var to visible ar hidden pass
 const isHide1 = ref(true);
@@ -304,9 +305,11 @@ const signupUser = async (user) => {
     if(isLoading.value) return;
 
     isLoading.value = true;
-    await authService.signup(formData);
+    const response = await authService.signup(formData);
 
     toast.success("تم إنشاء حِسابك بِنَجاح.")
+
+    router.push({name: "VerifyAccount" , params: {employeeId: response.id}});
 
   } catch(error){
 

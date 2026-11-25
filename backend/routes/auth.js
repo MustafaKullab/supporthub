@@ -1,7 +1,7 @@
 const express = require("express");
 const tryCatch = require("../middlewares/tryCatch");
 const upload = require("../middlewares/upload");
-const { signupUser , verifyAccount , loginUser , refreshTokens , logoutUser, resendVerification , forgotPassword , resetPassword} = require("../controller/authController");
+const { signupUser , verifyAccount , loginUser , getMe , refreshTokens , logoutUser, resendVerification , forgotPassword , resetPassword} = require("../controller/authController");
 const { authRateLimit } = require("../utils/rateLimits");
 const router = express.Router();
 
@@ -15,6 +15,8 @@ router.post("/auth/verify" , authRateLimit, tryCatch(verifyAccount));
 
 // Resend Code 
 router.post("/auth/resend-verification" , authRateLimit, tryCatch(resendVerification));
+
+router.get("/auth/me" , tryCatch(getMe));
 
 // Forgot Password 
 router.post("/auth/forgot-password" , authRateLimit, tryCatch(forgotPassword));

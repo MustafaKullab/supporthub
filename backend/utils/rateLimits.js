@@ -8,7 +8,7 @@ const gerenalRateLimit = rateLimit({
 
 const authRateLimit = rateLimit({
     windowMs: 15 * 60 * 1000,
-    max: 15,
+    max: 200,
     message: "Too many requests"
 });
 

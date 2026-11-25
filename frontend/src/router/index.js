@@ -14,6 +14,16 @@ const router = createRouter({
       component: () => import("@/views/SignupPage.vue"),
     },
     {
+      name: "VerifyAccount",
+      path: '/auth/verify-account/:employeeId',
+      component: () => import("@/views/VerifyAccount.vue"),
+    },
+    {
+      name: "HomePage",
+      path: '/',
+      component: () => import("@/views/HomePage.vue"),
+    },
+    {
       name: "ForgotPassword",
       path: '/auth/forgot-password',
       component: () => import("@/views/ForgotPassword.vue"),

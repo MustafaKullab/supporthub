@@ -1,5 +1,5 @@
 const STATUS = require("../constants/httpStatus");
-const { createEmployee , verifyAccountSrv , loginUserServ , refreshTokensSrv, resendVerificationSrv , forgotPasswordSrv , resetPasswordSrv } = require("../services/authServices");
+const { createEmployee ,getMeSrv , verifyAccountSrv , loginUserServ , refreshTokensSrv, resendVerificationSrv , forgotPasswordSrv , resetPasswordSrv } = require("../services/authServices");
 const {
   createAccessToken,
   createRefreshToken,
@@ -17,9 +17,20 @@ const signupUser = async (req, res) => {
     .status(STATUS.CREATED)
     .json({
       success: true,
-      data: {user: { name: user.name, email: user.email, avatar: user.avatar }},
+      data: {user: {id: user._id, name: user.name, email: user.email, avatar: user.avatar }},
     });
 };
+
+
+const getMe = async (req,res) => {
+
+  const { employeeId } = req.query;
+
+  const employee = await getMeSrv(employeeId);
+
+  return res.status(STATUS.OK).json({success: true , data: employee});
+
+}
 
 
 const verifyAccount = async (req,res) => {
@@ -101,4 +112,4 @@ const logoutUser = async (req,res) => {
   return res.status(STATUS.OK).json({success: true});
 }
 
-module.exports = {signupUser , verifyAccount , resendVerification , forgotPassword , resetPassword , loginUser , refreshTokens , logoutUser};
+module.exports = {signupUser , getMe , verifyAccount , resendVerification , forgotPassword , resetPassword , loginUser , refreshTokens , logoutUser};

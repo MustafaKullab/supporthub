@@ -50,18 +50,6 @@ const createEmployee = async (data) => {
   return employee;
 };
 
-
-const getMeSrv = async (employeeId) => {
-  
-  if(!employeeId || !mongoose.isValidObjectId(employeeId)) {
-      throw(createError(STATUS.BAD_REQUEST , "Not Valid employee id"));
-  }
-
-  const employee = await findEmployeeById(employeeId);
-
-  return employee;
-}
-
 const verifyAccountOnce = async (data) => {
   // التاكد من الايميل والكود
   if (
@@ -357,7 +345,6 @@ const refreshTokensSrv = async (refreshToken) => {
 
 module.exports = {
   createEmployee,
-  getMeSrv,
   verifyAccountSrv,
   resendVerificationSrv,
   forgotPasswordSrv,

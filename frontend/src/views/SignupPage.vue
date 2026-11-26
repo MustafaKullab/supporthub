@@ -305,11 +305,13 @@ const signupUser = async (user) => {
     if(isLoading.value) return;
 
     isLoading.value = true;
-    const response = await authService.signup(formData);
+    await authService.signup(formData);
 
     toast.success("تم إنشاء حِسابك بِنَجاح.")
 
-    router.push({name: "VerifyAccount" , params: {employeeId: response.id}});
+    sessionStorage.setItem("verificationEmail" , user.email.trim().toLowerCase());
+
+    router.push({name: "VerifyAccount"});
 
   } catch(error){
 

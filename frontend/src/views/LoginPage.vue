@@ -2,17 +2,12 @@
   <section class="LoginPage min-vh-100">
     <div class="container min-vh-100 d-flex align-items-center justify-content-center">
       <div
-        class="LoginCard row w-100 align-items-center justify-content-center bg-white rounded-4 shadow-sm"
+        class="LoginCard row w-100 align-items-center justify-content-center bg-white rounded-4 shadow-sm border"
       >
         <div class="col-lg-6 p-0">
-          <div class="detailsSide text-center px-5" style="height: 100%">
+          <div class="detailsSide text-center px-3 px-lg-5" style="height: 100%">
             <div class="logo">
-              <img
-                :src="logo"
-                class="img-fluid"
-                style="width: 200px"
-                alt="Logo"
-              />
+              <img :src="logo" class="img-fluid" style="width: 200px" alt="Logo" />
             </div>
 
             <div class="welcomeMsg">
@@ -156,11 +151,10 @@ import { ref, watch } from 'vue'
 import { useAuthStore } from '@/stores/authStore'
 import { toast } from 'vue-sonner'
 import router from '@/router'
-import logo from '@/assets/supportHubLogo.png';
-
+import logo from '@/assets/supportHubLogo.png'
 
 // Define auth store
-const authStore = useAuthStore();
+const authStore = useAuthStore()
 
 // isHide var to hide and visible password
 const isHide = ref(true)

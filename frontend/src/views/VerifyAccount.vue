@@ -1,7 +1,7 @@
 <template>
   <section class="VerifyAccount min-vh-100">
     <div class="container min-vh-100 d-flex align-items-center justify-content-center">
-      <div class="verifyCard row align-items-center w-100 bg-white rounded-4 shadow-sm">
+      <div class="verifyCard row align-items-center w-100 bg-white rounded-4 shadow-sm border">
         <div class="col-lg-7 px-3 px-md-5">
           <div class="details text-center">
             <div class="header pt-2">
@@ -36,7 +36,7 @@
             >
               <label class="form-label">رمز التحقق</label>
 
-              <div class="OTPCode" dir="rtl">
+              <div class="OTPCode" dir="ltr">
                 <input
                   type="text"
                   v-for="(digit, i) of code"
@@ -45,7 +45,6 @@
                   :class="errorStatus ? 'is-invalid' : ''"
                   maxlength="1"
                   :placeholder="errorStatus ? '' : '-'"
-                  dir="rtl"
                   v-model="code[i]"
                   ref="inputs"
                   @input="nextInp(i)"
@@ -136,8 +135,8 @@
             <div
               class="importantInfor p-3 d-flex align-items-center gap-3 rounded w-100"
               style="
-                background-color: #285ac9;
-                backdrop-filter: blur(30px);
+                background-color: rgba(255, 255, 255, 0.1);
+                backdrop-filter: blur(3px);
                 color: #f2f5fc;
                 border: 1px solid #3262cc !important;
               "
@@ -242,7 +241,7 @@ const resendCode = async (email) => {
   } catch {
     toast.error('تعذّر طلب إعادة الإرسال. حاول مجدداً.')
   } finally {
-    isResending.value = false;
+    isResending.value = false
   }
 }
 

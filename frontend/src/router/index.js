@@ -4,29 +4,34 @@ const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
-      name: "Login",
+      name: 'Login',
       path: '/auth/login',
-      component: () => import("@/views/LoginPage.vue"),
+      component: () => import('@/views/LoginPage.vue'),
     },
     {
-      name: "Signup",
+      name: 'Signup',
       path: '/auth/signup',
-      component: () => import("@/views/SignupPage.vue"),
+      component: () => import('@/views/SignupPage.vue'),
     },
     {
-      name: "VerifyAccount",
+      name: 'VerifyAccount',
       path: '/auth/verify-account/:employeeId',
-      component: () => import("@/views/VerifyAccount.vue"),
+      component: () => import('@/views/VerifyAccount.vue'),
     },
     {
-      name: "HomePage",
+      name: 'HomePage',
       path: '/',
-      component: () => import("@/views/HomePage.vue"),
+      component: () => import('@/views/HomePage.vue'),
     },
     {
-      name: "ForgotPassword",
+      name: 'ForgotPassword',
       path: '/auth/forgot-password',
-      component: () => import("@/views/ForgotPassword.vue"),
+      component: () => import('@/views/ForgotPassword.vue'),
+    },
+    {
+      name: 'ResetPassword',
+      path: '/auth/reset-password',
+      component: () => import('@/views/ResetPassword.vue'),
     },
   ],
 })

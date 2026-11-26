@@ -26,13 +26,13 @@
               </div>
               <div class="details" style="color: #000164">
                 <p class="m-0">تم إرسال رمز التحقُق إلى:</p>
-                <p class="m-0 fw-bold" v-if="employee">{{ employee.email }}</p>
+                <p class="m-0 fw-bold" v-if="email">{{ email }}</p>
               </div>
             </div>
 
             <form
               class="text-start"
-              @submit.prevent="verifyAccount(employee.email, verificationCode)"
+              @submit.prevent="verifyAccount(email, verificationCode)"
             >
               <label class="form-label">رمز التحقق</label>
 
@@ -63,7 +63,7 @@
                     backgroundColor: counter === 0 ? '#013cb8' : '#f0f1f6',
                     color: counter === 0 ? '#ffffff' : '#687088',
                   }"
-                  @click.prevent="resendCode(employee.email)"
+                  @click.prevent="resendCode(email)"
                 >
                   <div v-if="counter === 0" class="d-flex align-items-center gap-2">
                     <div class="icon"><i class="bi bi-arrow-repeat"></i></div>
@@ -165,15 +165,11 @@
 <script setup>
 import logo from '@/assets/supportHubLogo.png'
 import router from '@/router'
-import { getMe, resendCodeSrv, verifyAcc } from '@/services/authService'
-import { computed, onMounted, onUnmounted, ref, watch } from 'vue'
-import { useRoute } from 'vue-router'
+import { resendCodeSrv, verifyAcc } from '@/services/authService'
+import { computed, onUnmounted, ref, watch } from 'vue'
 import { toast } from 'vue-sonner'
 
-// Define Route Obj
-const route = useRoute()
-const employeeId = route.params.employeeId
-let employee = ref(null)
+const email = ref(sessionStorage.getItem('verificationEmail') || '')
 
 // OTP vars
 const code = ref(['', '', '', '', '', ''])
@@ -255,29 +251,22 @@ const verifyAccount = async (email, code) => {
   }
 
   try {
-    if (isLodaing.value) return
-    isLodaing.value = true
+    if (isLodaing.value) return;
+    isLodaing.value = true;
 
-    await verifyAcc(email, code)
+    await verifyAcc(email, code);
 
-    toast.success('تم تفعيل الحساب بنجاح')
+    toast.success('تم تفعيل الحساب بنجاح');
 
-    router.push({ name: 'Login' })
+    router.push({ name: 'Login' });
+
+    sessionStorage.removeItem('verificationEmail');
   } catch (error) {
     errorStatus.value = error?.response?.data?.data?.status
   } finally {
     isLodaing.value = false
   }
 }
-
-onMounted(async () => {
-  try {
-    const response = await getMe(employeeId)
-    employee.value = response
-  } catch (error) {
-    errorStatus.value = error?.response?.data?.status
-  }
-})
 
 onUnmounted(() => {
   clearInterval(coldownCounter)
